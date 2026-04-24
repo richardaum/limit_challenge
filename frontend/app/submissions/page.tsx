@@ -38,16 +38,18 @@ export default function SubmissionsPage() {
 
   const status = getFilterParam<SubmissionStatus>('status') ?? '';
   const brokerId = getFilterParam<string>('brokerId') ?? '';
-  const companyQuery = getFilterParam<string>('companyQuery') ?? '';
+  const companySearch = getFilterParam<string>('companySearch') ?? '';
+
   const [view, setView] = useState<SubmissionLayout>('grid');
+  const [companySearchInput, setCompanySearchInput] = useState(companySearch);
 
   const filters = useMemo(
     () => ({
       status: status || undefined,
       brokerId: brokerId || undefined,
-      companySearch: companyQuery || undefined,
+      companySearch: companySearchInput || undefined,
     }),
-    [status, brokerId, companyQuery],
+    [status, brokerId, companySearchInput],
   );
 
   const submissionsQuery = useSubmissionsList(filters);
@@ -99,10 +101,13 @@ export default function SubmissionsPage() {
               </TextField>
               <TextField
                 label="Company search"
-                value={companyQuery}
-                onChange={(event) => setFilterParam('companyQuery', event.target.value)}
+                value={companySearchInput}
+                onChange={(event) => {
+                  const nextValue = event.target.value;
+                  setCompanySearchInput(nextValue);
+                  setFilterParam('companySearch', nextValue);
+                }}
                 fullWidth
-                helperText="Send as ?companySearch=..."
               />
             </Stack>
           </CardContent>
