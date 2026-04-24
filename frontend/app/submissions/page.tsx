@@ -11,9 +11,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { useBrokerOptions } from '@/lib/hooks/useBrokerOptions';
+import { useFilterParams } from '@/lib/hooks/useFilterParam';
 import { useSubmissionsList } from '@/lib/hooks/useSubmissions';
 import { SubmissionStatus } from '@/lib/types';
 
@@ -26,9 +27,11 @@ const STATUS_OPTIONS: { label: string; value: SubmissionStatus | '' }[] = [
 ];
 
 export default function SubmissionsPage() {
-  const [status, setStatus] = useState<SubmissionStatus | ''>('');
-  const [brokerId, setBrokerId] = useState('');
-  const [companyQuery, setCompanyQuery] = useState('');
+  const { getFilterParam, setFilterParam } = useFilterParams();
+
+  const status = getFilterParam<SubmissionStatus>('status') ?? '';
+  const brokerId = getFilterParam<string>('brokerId') ?? '';
+  const companyQuery = getFilterParam<string>('companyQuery') ?? '';
 
   const filters = useMemo(
     () => ({
@@ -62,7 +65,7 @@ export default function SubmissionsPage() {
                 select
                 label="Status"
                 value={status}
-                onChange={(event) => setStatus(event.target.value as SubmissionStatus | '')}
+                onChange={(event) => setFilterParam('status', event.target.value)}
                 fullWidth
               >
                 {STATUS_OPTIONS.map((option) => (
@@ -75,7 +78,7 @@ export default function SubmissionsPage() {
                 select
                 label="Broker"
                 value={brokerId}
-                onChange={(event) => setBrokerId(event.target.value)}
+                onChange={(event) => setFilterParam('brokerId', event.target.value)}
                 fullWidth
                 helperText="Populate options via /api/brokers"
               >
@@ -89,7 +92,7 @@ export default function SubmissionsPage() {
               <TextField
                 label="Company search"
                 value={companyQuery}
-                onChange={(event) => setCompanyQuery(event.target.value)}
+                onChange={(event) => setFilterParam('companyQuery', event.target.value)}
                 fullWidth
                 helperText="Send as ?companySearch=..."
               />
@@ -108,7 +111,7 @@ export default function SubmissionsPage() {
               <Divider />
               <Box>
                 <pre style={{ margin: 0, fontSize: 14 }}>
-                  {JSON.stringify({ filters, queryKey: submissionsQuery.queryKey }, null, 2)}
+                  {JSON.stringify({ filters, queryKey: submissionsQuery.data }, null, 2)}
                 </pre>
               </Box>
             </Stack>
