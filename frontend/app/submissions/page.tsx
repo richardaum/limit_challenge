@@ -14,6 +14,7 @@ import {
 import { useMemo, useState } from 'react';
 
 import { useBrokerOptions } from '@/lib/hooks/useBrokerOptions';
+import { useDebouncedState } from '@/lib/hooks/useDebouncedState';
 import { useFilterParams } from '@/lib/hooks/useFilterParam';
 import {
   SubmissionLayout,
@@ -41,15 +42,18 @@ export default function SubmissionsPage() {
   const companySearch = getFilterParam<string>('companySearch') ?? '';
 
   const [view, setView] = useState<SubmissionLayout>('grid');
-  const [companySearchInput, setCompanySearchInput] = useState(companySearch);
+  const [companySearchInput, debouncedCompanySearch, setCompanySearchInput] = useDebouncedState(
+    companySearch,
+    300,
+  );
 
   const filters = useMemo(
     () => ({
       status: status || undefined,
       brokerId: brokerId || undefined,
-      companySearch: companySearchInput || undefined,
+      companySearch: debouncedCompanySearch || undefined,
     }),
-    [status, brokerId, companySearchInput],
+    [status, brokerId, debouncedCompanySearch],
   );
 
   const submissionsQuery = useSubmissionsList(filters);
