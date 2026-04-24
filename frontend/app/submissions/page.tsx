@@ -16,7 +16,9 @@ import { useMemo } from 'react';
 import { useBrokerOptions } from '@/lib/hooks/useBrokerOptions';
 import { useFilterParams } from '@/lib/hooks/useFilterParam';
 import { useSubmissionsList } from '@/lib/hooks/useSubmissions';
+import { SubmissionGrid } from '@/lib/modules/submissions/components/SubmissionGrid';
 import { SubmissionStatus } from '@/lib/types';
+import { SubmissionStatusChip } from '@/lib/modules/submissions/components/SubmissionStatusChip';
 
 const STATUS_OPTIONS: { label: string; value: SubmissionStatus | '' }[] = [
   { label: 'All statuses', value: '' },
@@ -70,7 +72,7 @@ export default function SubmissionsPage() {
               >
                 {STATUS_OPTIONS.map((option) => (
                   <MenuItem key={option.value || 'all'} value={option.value}>
-                    {option.label}
+                    {option.value ? <SubmissionStatusChip status={option.value} /> : option.label}
                   </MenuItem>
                 ))}
               </TextField>
@@ -103,17 +105,22 @@ export default function SubmissionsPage() {
         <Card variant="outlined">
           <CardContent>
             <Stack spacing={2}>
-              <Typography variant="h6">Submission list</Typography>
-              <Typography color="text.secondary">
+              <Typography variant="h6">Submissions</Typography>
+              {/* <Typography color="text.secondary">
                 Hook `submissionsQuery` to render rows, totals, and pagination states. The query is
                 disabled by default so no network calls fire until you enable it.
-              </Typography>
+              </Typography> */}
               <Divider />
-              <Box>
+              {/* <Box>
                 <pre style={{ margin: 0, fontSize: 14 }}>
                   {JSON.stringify({ filters, queryKey: submissionsQuery.data }, null, 2)}
                 </pre>
-              </Box>
+              </Box> */}
+              {!submissionsQuery.isLoading && submissionsQuery.data ? (
+                <SubmissionGrid submissions={submissionsQuery.data.results} />
+              ) : (
+                <Typography color="text.secondary">Loading...</Typography>
+              )}
             </Stack>
           </CardContent>
         </Card>
