@@ -45,7 +45,7 @@ export function useSubmissionDetail(id: string | number) {
   return useQuery({
     queryKey: [SUBMISSIONS_QUERY_KEY, id],
     queryFn: () => fetchSubmissionDetail(id),
-    enabled: false,
+    enabled: true,
     staleTime: 60_000,
   });
 }
