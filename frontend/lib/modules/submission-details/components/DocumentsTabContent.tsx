@@ -21,26 +21,24 @@ function formatDate(value: string) {
 }
 
 export function DocumentsTabContent({ submission }: DocumentsTabContentProps) {
-  return (
-    submission.documents.length === 0 ? (
-      <Typography color="text.secondary">No documents uploaded.</Typography>
-    ) : (
-      <Stack spacing={styles.list.spacing}>
-        {submission.documents.map((document) => (
-          <Card key={document.id} variant="outlined">
-            <CardContent sx={styles.cardContent}>
-              <Stack spacing={0.5}>
-                <MuiExternalLink href={document.fileUrl} target="_blank" rel="noreferrer">
-                  {document.title}
-                </MuiExternalLink>
-                <Typography variant="body2" color="text.secondary">
-                  {document.docType} - uploaded {formatDate(document.uploadedAt)}
-                </Typography>
-              </Stack>
-            </CardContent>
-          </Card>
-        ))}
-      </Stack>
-    )
+  return submission.documents.length === 0 ? (
+    <Typography color="text.secondary">No documents uploaded.</Typography>
+  ) : (
+    <Stack spacing={styles.list.spacing}>
+      {submission.documents.map((document) => (
+        <Card key={document.id} variant="outlined">
+          <CardContent sx={styles.cardContent}>
+            <Stack spacing={0.5}>
+              <MuiExternalLink href={document.fileUrl} target="_blank" rel="noreferrer">
+                {document.title}
+              </MuiExternalLink>
+              <Typography variant="body2" color="text.secondary">
+                {document.docType} - uploaded {formatDate(document.uploadedAt)}
+              </Typography>
+            </Stack>
+          </CardContent>
+        </Card>
+      ))}
+    </Stack>
   );
 }

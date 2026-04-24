@@ -13,7 +13,12 @@ const styles = {
   topRow: { columnGap: 3, rowGap: 2 },
   fitContent: { width: 'fit-content' },
   ownerRow: { p: 0.25, color: 'grey.500', '&:hover': { color: 'grey.600' } },
-  companyRow: { direction: { xs: 'column', sm: 'row' }, spacing: 2.5, useFlexGap: true, flexWrap: 'wrap' },
+  companyRow: {
+    direction: { xs: 'column', sm: 'row' },
+    spacing: 2.5,
+    useFlexGap: true,
+    flexWrap: 'wrap',
+  },
 } as const;
 
 function formatDate(value: string) {
@@ -52,11 +57,7 @@ export function OverviewTabContent({ submission }: OverviewTabContentProps) {
               <Stack direction="row" spacing={0.5} alignItems="center">
                 <Typography>{submission.owner.fullName}</Typography>
                 <Tooltip title={submission.owner.email} arrow>
-                  <IconButton
-                    size="small"
-                    aria-label="Owner email"
-                    sx={styles.ownerRow}
-                  >
+                  <IconButton size="small" aria-label="Owner email" sx={styles.ownerRow}>
                     <EmailOutlinedIcon fontSize="inherit" />
                   </IconButton>
                 </Tooltip>
