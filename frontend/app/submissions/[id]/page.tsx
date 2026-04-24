@@ -52,6 +52,8 @@ const styles = {
     gap: 1.5,
   },
   content: {
+    display: 'flex',
+    flexDirection: 'column',
     flex: 1,
     minHeight: 0,
     maxHeight: '100%',
@@ -64,14 +66,24 @@ const styles = {
   mutedDivider: { borderColor: 'grey.200' },
   desktopGrid: {
     display: 'grid',
+    flex: 1,
     gap: 3,
     height: '100%',
     minHeight: 0,
+    minWidth: 0,
     overflow: 'hidden',
     gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1fr) 360px' },
   },
   desktopMainColumn: { minHeight: 0, height: '100%', overflow: 'hidden' },
-  desktopTabPanel: { minHeight: 0, flex: 1, overflow: 'auto' },
+  desktopTabPanel: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: 0,
+    flex: 1,
+    overflow: 'hidden',
+    minWidth: 0,
+  },
+  tabScrollArea: { flex: 1, minHeight: 0, overflow: 'auto', minWidth: 0 },
 } as const;
 
 export default function SubmissionDetailPage() {
@@ -120,7 +132,7 @@ export default function SubmissionDetailPage() {
         ) : !submission ? (
           <Typography color="text.secondary">Submission not found.</Typography>
         ) : !isDesktop ? (
-          <Stack spacing={2}>
+          <Stack spacing={2} sx={{ flex: 1, minHeight: 0, minWidth: 0, overflow: 'hidden' }}>
             <CondensedTabs value={activeTab} onChange={handleTabChange}>
               <CondensedTab value="overview" label="Overview" />
               <CondensedTab
@@ -137,10 +149,12 @@ export default function SubmissionDetailPage() {
               />
             </CondensedTabs>
             <Divider sx={styles.mutedDivider} />
-            {activeTab === 'overview' && <OverviewTabContent submission={submission} />}
-            {activeTab === 'contacts' && <ContactsTabContent submission={submission} />}
-            {activeTab === 'documents' && <DocumentsTabContent submission={submission} />}
-            {activeTab === 'notes' && <NotesTabContent submission={submission} />}
+            <Box sx={styles.tabScrollArea}>
+              {activeTab === 'overview' && <OverviewTabContent submission={submission} />}
+              {activeTab === 'contacts' && <ContactsTabContent submission={submission} />}
+              {activeTab === 'documents' && <DocumentsTabContent submission={submission} />}
+              {activeTab === 'notes' && <NotesTabContent submission={submission} />}
+            </Box>
           </Stack>
         ) : (
           <Box sx={styles.desktopGrid}>
@@ -158,9 +172,11 @@ export default function SubmissionDetailPage() {
               </CondensedTabs>
               <Divider sx={styles.mutedDivider} />
               <Box sx={styles.desktopTabPanel}>
-                {activeTab === 'overview' && <OverviewTabContent submission={submission} />}
-                {activeTab === 'contacts' && <ContactsTabContent submission={submission} />}
-                {activeTab === 'documents' && <DocumentsTabContent submission={submission} />}
+                <Box sx={styles.tabScrollArea}>
+                  {activeTab === 'overview' && <OverviewTabContent submission={submission} />}
+                  {activeTab === 'contacts' && <ContactsTabContent submission={submission} />}
+                  {activeTab === 'documents' && <DocumentsTabContent submission={submission} />}
+                </Box>
               </Box>
             </Stack>
             <NotesDesktopSidebar submission={submission} />
