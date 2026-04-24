@@ -15,6 +15,15 @@ const colorMap: Record<SubmissionStatus, { text: string; background: string; bor
   lost: { text: '#8f2f2f', background: '#fdf0f0', border: '#f5dada' },
 };
 
+const styles = {
+  chip: (text: string, backgroundColor: string) => ({
+    color: text,
+    backgroundColor,
+    border: 'none',
+    borderRadius: 1,
+  }),
+} as const;
+
 function toTitleCase(value: string) {
   return value
     .split('_')
@@ -26,15 +35,6 @@ export function SubmissionStatusChip({ status }: SubmissionStatusChipProps) {
   const tone = colorMap[status];
 
   return (
-    <Chip
-      size="small"
-      label={toTitleCase(status)}
-      sx={{
-        color: tone.text,
-        backgroundColor: tone.background,
-        border: 'none',
-        borderRadius: 1,
-      }}
-    />
+    <Chip size="small" label={toTitleCase(status)} sx={styles.chip(tone.text, tone.background)} />
   );
 }

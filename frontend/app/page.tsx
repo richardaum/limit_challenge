@@ -3,12 +3,17 @@
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
+const styles = {
+  page: { py: 10 },
+  content: { display: 'flex', flexDirection: 'column', gap: 4 },
+} as const;
+
 export default function HomePage() {
   const router = useRouter();
 
   return (
-    <Container maxWidth="md" sx={{ py: 10 }}>
-      <Box display="flex" flexDirection="column" gap={4}>
+    <Container maxWidth="md" sx={styles.page}>
+      <Box sx={styles.content}>
         <Typography variant="h3" component="h1">
           Submission Tracker Challenge
         </Typography>

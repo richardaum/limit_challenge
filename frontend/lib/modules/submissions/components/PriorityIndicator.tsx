@@ -23,16 +23,17 @@ const priorityIconMap: Record<SubmissionPriority, typeof PriorityHighIcon> = {
   low: KeyboardDoubleArrowDownIcon,
 };
 
+const styles = {
+  tooltip: { textTransform: 'capitalize' },
+  icon: (color: string) => ({ color }),
+} as const;
+
 export function PriorityIndicator({ priority }: PriorityIndicatorProps) {
   const PriorityIcon = priorityIconMap[priority];
 
   return (
-    <Tooltip
-      arrow
-      title={`Priority: ${priority}`}
-      slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
-    >
-      <PriorityIcon fontSize="small" sx={{ color: priorityColorMap[priority] }} />
+    <Tooltip arrow title={`Priority: ${priority}`} slotProps={{ tooltip: { sx: styles.tooltip } }}>
+      <PriorityIcon fontSize="small" sx={styles.icon(priorityColorMap[priority])} />
     </Tooltip>
   );
 }

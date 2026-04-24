@@ -13,6 +13,10 @@ type SubmissionCardProps = {
   submission: SubmissionListItem;
 };
 
+const styles = {
+  divider: { my: 1, borderColor: 'grey.200' },
+} as const;
+
 export function SubmissionCard({ submission }: SubmissionCardProps) {
   return (
     <Card variant="outlined">
@@ -39,7 +43,7 @@ export function SubmissionCard({ submission }: SubmissionCardProps) {
             <Truncate>Broker: {submission.broker.name}</Truncate>
           </Typography>
 
-          <Divider sx={{ my: 1, borderColor: 'grey.200' }} />
+          <Divider sx={styles.divider} />
 
           <Typography variant="body2">
             <Truncate lines={2}>{submission.summary || 'No summary available.'}</Truncate>

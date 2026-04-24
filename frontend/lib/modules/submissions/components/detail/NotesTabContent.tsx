@@ -9,6 +9,26 @@ type NotesTabContentProps = {
   submission: SubmissionDetail;
 };
 
+const styles = {
+  notesList: { spacing: 1.5 },
+  cardContent: { '&:last-child': { pb: 2 } },
+  noteBody: { mt: 0.75 },
+  noteDate: { mt: 1, display: 'block' },
+  sidebar: {
+    minHeight: 0,
+    height: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden',
+    borderLeft: { lg: '1px solid' },
+    borderLeftColor: { lg: 'grey.300' },
+    pl: { lg: 3 },
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  notesCounter: { mb: 1.5 },
+  notesScrollArea: { minHeight: 0, flex: 1, overflowY: 'auto', pr: 1.5 },
+} as const;
+
 function formatDate(value: string) {
   return new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
@@ -22,17 +42,17 @@ export function NotesTabContent({ submission }: NotesTabContentProps) {
   }
 
   return (
-    <Stack spacing={1.5}>
+    <Stack spacing={styles.notesList.spacing}>
       {submission.notes.map((note) => (
         <Card key={note.id} variant="outlined">
-          <CardContent sx={{ '&:last-child': { pb: 2 } }}>
+          <CardContent sx={styles.cardContent}>
             <Typography variant="body2" color="text.secondary">
               {note.authorName}
             </Typography>
-            <Typography variant="body2" sx={{ mt: 0.75 }}>
+            <Typography variant="body2" sx={styles.noteBody}>
               {note.body}
             </Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+            <Typography variant="caption" color="text.secondary" sx={styles.noteDate}>
               {formatDate(note.createdAt)}
             </Typography>
           </CardContent>
@@ -44,19 +64,7 @@ export function NotesTabContent({ submission }: NotesTabContentProps) {
 
 export function NotesDesktopSidebar({ submission }: NotesTabContentProps) {
   return (
-    <Box
-      sx={{
-        minHeight: 0,
-        height: '100%',
-        maxHeight: '100%',
-        overflow: 'hidden',
-        borderLeft: { lg: '1px solid' },
-        borderLeftColor: { lg: 'grey.300' },
-        pl: { lg: 3 },
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <Box sx={styles.sidebar}>
       <LabeledCounter
         label={
           <Typography component="span" variant="subtitle1">
@@ -64,9 +72,9 @@ export function NotesDesktopSidebar({ submission }: NotesTabContentProps) {
           </Typography>
         }
         count={submission.notes.length}
-        sx={{ mb: 1.5 }}
+        sx={styles.notesCounter}
       />
-      <Box sx={{ minHeight: 0, flex: 1, overflowY: 'auto', pr: 1.5 }}>
+      <Box sx={styles.notesScrollArea}>
         <NotesTabContent submission={submission} />
       </Box>
     </Box>

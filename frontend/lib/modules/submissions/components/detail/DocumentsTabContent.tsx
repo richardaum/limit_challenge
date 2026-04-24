@@ -8,6 +8,11 @@ type DocumentsTabContentProps = {
   submission: SubmissionDetail;
 };
 
+const styles = {
+  list: { spacing: 1.5 },
+  cardContent: { '&:last-child': { pb: 2 } },
+} as const;
+
 function formatDate(value: string) {
   return new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
@@ -20,10 +25,10 @@ export function DocumentsTabContent({ submission }: DocumentsTabContentProps) {
     submission.documents.length === 0 ? (
       <Typography color="text.secondary">No documents uploaded.</Typography>
     ) : (
-      <Stack spacing={1.5}>
+      <Stack spacing={styles.list.spacing}>
         {submission.documents.map((document) => (
           <Card key={document.id} variant="outlined">
-            <CardContent sx={{ '&:last-child': { pb: 2 } }}>
+            <CardContent sx={styles.cardContent}>
               <Stack spacing={0.5}>
                 <MuiExternalLink href={document.fileUrl} target="_blank" rel="noreferrer">
                   {document.title}

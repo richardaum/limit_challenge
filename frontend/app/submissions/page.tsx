@@ -34,6 +34,17 @@ const STATUS_OPTIONS: { label: string; value: SubmissionStatus | '' }[] = [
   { label: 'Lost', value: 'lost' },
 ];
 
+const styles = {
+  page: { py: 6 },
+  filtersRow: { direction: { xs: 'column', sm: 'row' }, spacing: 2 },
+  submissionsHeader: {
+    direction: { xs: 'column', sm: 'row' },
+    spacing: 1.5,
+    justifyContent: 'space-between',
+    alignItems: { xs: 'stretch', sm: 'center' },
+  },
+} as const;
+
 export default function SubmissionsPage() {
   const { getFilterParam, setFilterParam } = useFilterParams();
 
@@ -60,7 +71,7 @@ export default function SubmissionsPage() {
   const brokerQuery = useBrokerOptions();
 
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
+    <Container maxWidth="lg" sx={styles.page}>
       <Stack spacing={4}>
         <Box>
           <Typography variant="h4" component="h1">
@@ -74,7 +85,7 @@ export default function SubmissionsPage() {
 
         <Card variant="outlined">
           <CardContent>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <Stack direction={styles.filtersRow.direction} spacing={styles.filtersRow.spacing}>
               <TextField
                 select
                 label="Status"
@@ -127,10 +138,10 @@ export default function SubmissionsPage() {
           <CardContent>
             <Stack spacing={2}>
               <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                spacing={1.5}
-                justifyContent="space-between"
-                alignItems={{ xs: 'stretch', sm: 'center' }}
+                direction={styles.submissionsHeader.direction}
+                spacing={styles.submissionsHeader.spacing}
+                justifyContent={styles.submissionsHeader.justifyContent}
+                alignItems={styles.submissionsHeader.alignItems}
               >
                 <Typography variant="h6">Submissions</Typography>
                 <SubmissionLayoutSwitcher value={view} onChange={setView} />

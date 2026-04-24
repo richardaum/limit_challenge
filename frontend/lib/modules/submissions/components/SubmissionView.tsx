@@ -8,14 +8,20 @@ type SubmissionViewProps = {
   view?: 'grid' | 'list';
 };
 
+const styles = {
+  grid: {
+    display: 'grid',
+    gap: 2,
+  },
+} as const;
+
 export function SubmissionView({ submissions, view = 'grid' }: SubmissionViewProps) {
   const isListView = view === 'list';
 
   return (
     <Box
       sx={{
-        display: 'grid',
-        gap: 2,
+        ...styles.grid,
         gridTemplateColumns: {
           xs: '1fr',
           md: isListView ? '1fr' : 'repeat(2, minmax(0, 1fr))',

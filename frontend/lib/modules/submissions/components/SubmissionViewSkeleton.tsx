@@ -7,6 +7,14 @@ type SubmissionViewSkeletonProps = {
   count?: number;
 };
 
+const styles = {
+  skeletonDivider: { my: 0.5, borderColor: 'grey.200' },
+  grid: {
+    display: 'grid',
+    gap: 2,
+  },
+} as const;
+
 function SubmissionCardSkeleton() {
   return (
     <Card variant="outlined">
@@ -17,7 +25,7 @@ function SubmissionCardSkeleton() {
             <Skeleton variant="rounded" width={80} height={24} />
           </Stack>
           <Skeleton variant="text" width="40%" />
-          <Divider sx={{ my: 0.5, borderColor: 'grey.200' }} />
+          <Divider sx={styles.skeletonDivider} />
           <Stack spacing={0.5}>
             <Skeleton variant="text" width="100%" />
             <Skeleton variant="text" width="85%" />
@@ -34,8 +42,7 @@ export function SubmissionViewSkeleton({ view = 'grid', count = 6 }: SubmissionV
   return (
     <Box
       sx={{
-        display: 'grid',
-        gap: 2,
+        ...styles.grid,
         gridTemplateColumns: {
           xs: '1fr',
           md: isListView ? '1fr' : 'repeat(2, minmax(0, 1fr))',
