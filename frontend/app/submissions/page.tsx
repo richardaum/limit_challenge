@@ -90,14 +90,20 @@ export default function SubmissionsPage() {
               </TextField>
               <TextField
                 select
-                label="Broker"
+                label={
+                  brokerQuery.isLoading
+                    ? 'Loading brokers...'
+                    : brokerQuery.isError
+                      ? 'Failed to load brokers'
+                      : 'Broker'
+                }
                 value={brokerId}
                 onChange={(event) => setFilterParam('brokerId', event.target.value)}
+                disabled={brokerQuery.isLoading || brokerQuery.isError}
                 fullWidth
-                helperText="Populate options via /api/brokers"
               >
                 <MenuItem value="">All brokers</MenuItem>
-                {brokerQuery.data?.map((broker) => (
+                {brokerQuery.data?.results?.map((broker) => (
                   <MenuItem key={broker.id} value={String(broker.id)}>
                     {broker.name}
                   </MenuItem>
