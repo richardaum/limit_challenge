@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { QueryKey, useQuery } from '@tanstack/react-query';
+import { QueryKey, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 import { apiClient } from '@/lib/api-client';
 import {
@@ -13,14 +13,16 @@ import {
 
 const SUBMISSIONS_QUERY_KEY = 'submissions';
 
-async function fetchSubmissions(filters: SubmissionListFilters) {
-  const response = await apiClient.get<PaginatedResponse<SubmissionListItem>>('/submissions/', {
-    params: {
-      status: filters.status,
-      brokerId: filters.brokerId,
-      companySearch: filters.companySearch,
-    },
-  });
+async function fetchSubmissions(filters: SubmissionListFilters, pageUrl?: string | null) {
+  const response = pageUrl
+    ? await apiClient.get<PaginatedResponse<SubmissionListItem>>(pageUrl)
+    : await apiClient.get<PaginatedResponse<SubmissionListItem>>('/submissions/', {
+        params: {
+          status: filters.status,
+          brokerId: filters.brokerId,
+          companySearch: filters.companySearch,
+        },
+      });
   return response.data;
 }
 
@@ -38,6 +40,15 @@ export function useSubmissionsList(filters: SubmissionListFilters) {
     queryKey: [SUBMISSIONS_QUERY_KEY, filters] as QueryKey,
     queryFn: () => fetchSubmissions(filters),
     enabled: true,
+  });
+}
+
+export function useSubmissionsListInfinite(filters: SubmissionListFilters) {
+  return useInfiniteQuery({
+    queryKey: [SUBMISSIONS_QUERY_KEY, 'infinite', filters] as QueryKey,
+    queryFn: ({ pageParam }) => fetchSubmissions(filters, pageParam),
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => lastPage.next ?? undefined,
   });
 }
 

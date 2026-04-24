@@ -16,15 +16,17 @@ import { useMemo, useState } from 'react';
 import { useBrokerOptions } from '@/lib/hooks/useBrokerOptions';
 import { useDebouncedState } from '@/lib/hooks/useDebouncedState';
 import { useFilterParams } from '@/lib/hooks/useFilterParam';
+import { useSubmissionsListInfinite } from '@/lib/hooks/useSubmissions';
 import {
   SubmissionLayout,
   SubmissionLayoutSwitcher,
 } from '@/lib/modules/submissions/components/SubmissionLayoutSwitcher';
+import { LabeledCounter } from '@/lib/modules/submissions/components/LabeledCounter';
 import { SubmissionViewSkeleton } from '@/lib/modules/submissions/components/SubmissionViewSkeleton';
-import { useSubmissionsList } from '@/lib/hooks/useSubmissions';
 import { SubmissionView } from '@/lib/modules/submissions/components/SubmissionView';
 import { SubmissionStatus } from '@/lib/types';
 import { SubmissionStatusChip } from '@/lib/modules/submissions/components/SubmissionStatusChip';
+import { SeeMoreLink } from '@/lib/modules/submissions/components/SeeMoreLink';
 
 const STATUS_OPTIONS: { label: string; value: SubmissionStatus | '' }[] = [
   { label: 'All statuses', value: '' },
@@ -67,8 +69,14 @@ export default function SubmissionsPage() {
     [status, brokerId, debouncedCompanySearch],
   );
 
-  const submissionsQuery = useSubmissionsList(filters);
+  const submissionsQuery = useSubmissionsListInfinite(filters);
   const brokerQuery = useBrokerOptions();
+  const submissions = useMemo(
+    () => submissionsQuery.data?.pages.flatMap((page) => page.results) ?? [],
+    [submissionsQuery.data],
+  );
+  const totalSubmissions = submissionsQuery.data?.pages[0]?.count ?? 0;
+  const hasMore = Boolean(submissionsQuery.data?.pages.at(-1)?.next);
 
   return (
     <Container maxWidth="lg" sx={styles.page}>
@@ -143,7 +151,14 @@ export default function SubmissionsPage() {
                 justifyContent={styles.submissionsHeader.justifyContent}
                 alignItems={styles.submissionsHeader.alignItems}
               >
-                <Typography variant="h6">Submissions</Typography>
+                <LabeledCounter
+                  label={
+                    <Typography component="span" variant="h6">
+                      Submissions
+                    </Typography>
+                  }
+                  count={totalSubmissions}
+                />
                 <SubmissionLayoutSwitcher value={view} onChange={setView} />
               </Stack>
               {/* <Typography color="text.secondary">
@@ -162,8 +177,19 @@ export default function SubmissionsPage() {
                 <Typography color="error.main">
                   Failed to load submissions. Please try again.
                 </Typography>
-              ) : submissionsQuery.data ? (
-                <SubmissionView submissions={submissionsQuery.data.results} view={view} />
+              ) : submissions.length > 0 ? (
+                <>
+                  <SubmissionView submissions={submissions} view={view} />
+                  {hasMore && (
+                    <SeeMoreLink
+                      loading={submissionsQuery.isFetchingNextPage}
+                      onClick={() => {
+                        if (submissionsQuery.isFetchingNextPage) return;
+                        void submissionsQuery.fetchNextPage();
+                      }}
+                    />
+                  )}
+                </>
               ) : (
                 <Typography color="text.secondary">No submissions found.</Typography>
               )}
