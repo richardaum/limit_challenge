@@ -19,6 +19,7 @@ import {
   SubmissionLayout,
   SubmissionLayoutSwitcher,
 } from '@/lib/modules/submissions/components/SubmissionLayoutSwitcher';
+import { SubmissionViewSkeleton } from '@/lib/modules/submissions/components/SubmissionViewSkeleton';
 import { useSubmissionsList } from '@/lib/hooks/useSubmissions';
 import { SubmissionView } from '@/lib/modules/submissions/components/SubmissionView';
 import { SubmissionStatus } from '@/lib/types';
@@ -129,10 +130,16 @@ export default function SubmissionsPage() {
                   {JSON.stringify({ filters, queryKey: submissionsQuery.data }, null, 2)}
                 </pre>
               </Box> */}
-              {!submissionsQuery.isLoading && submissionsQuery.data ? (
+              {submissionsQuery.isLoading ? (
+                <SubmissionViewSkeleton view={view} />
+              ) : submissionsQuery.isError ? (
+                <Typography color="error.main">
+                  Failed to load submissions. Please try again.
+                </Typography>
+              ) : submissionsQuery.data ? (
                 <SubmissionView submissions={submissionsQuery.data.results} view={view} />
               ) : (
-                <Typography color="text.secondary">Loading...</Typography>
+                <Typography color="text.secondary">No submissions found.</Typography>
               )}
             </Stack>
           </CardContent>
