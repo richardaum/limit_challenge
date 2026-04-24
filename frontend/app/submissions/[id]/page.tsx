@@ -15,14 +15,14 @@ import { SyntheticEvent, useState } from 'react';
 
 import { useSubmissionDetail } from '@/lib/hooks/useSubmissions';
 import { CondensedTab, CondensedTabs } from '@/lib/modules/submissions/components/CondensedTabs';
-import { ContactsTabContent } from '@/lib/modules/submissions/components/detail/ContactsTabContent';
-import { DocumentsTabContent } from '@/lib/modules/submissions/components/detail/DocumentsTabContent';
+import { ContactsTabContent } from '@/lib/modules/submission-details/components/ContactsTabContent';
+import { DocumentsTabContent } from '@/lib/modules/submission-details/components/DocumentsTabContent';
 import {
   NotesDesktopSidebar,
   NotesTabContent,
-} from '@/lib/modules/submissions/components/detail/NotesTabContent';
+} from '@/lib/modules/submission-details/components/NotesTabContent';
 import { LabeledCounter } from '@/lib/modules/submissions/components/LabeledCounter';
-import { OverviewTabContent } from '@/lib/modules/submissions/components/detail/OverviewTabContent';
+import { OverviewTabContent } from '@/lib/modules/submission-details/components/OverviewTabContent';
 import { PriorityIndicator } from '@/lib/modules/submissions/components/PriorityIndicator';
 import { SubmissionStatusChip } from '@/lib/modules/submissions/components/SubmissionStatusChip';
 import { Truncate } from '@/lib/modules/submissions/components/Truncate';
