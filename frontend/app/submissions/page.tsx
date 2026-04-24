@@ -11,12 +11,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useBrokerOptions } from '@/lib/hooks/useBrokerOptions';
 import { useFilterParams } from '@/lib/hooks/useFilterParam';
+import {
+  SubmissionLayout,
+  SubmissionLayoutSwitcher,
+} from '@/lib/modules/submissions/components/SubmissionLayoutSwitcher';
 import { useSubmissionsList } from '@/lib/hooks/useSubmissions';
-import { SubmissionGrid } from '@/lib/modules/submissions/components/SubmissionGrid';
+import { SubmissionView } from '@/lib/modules/submissions/components/SubmissionView';
 import { SubmissionStatus } from '@/lib/types';
 import { SubmissionStatusChip } from '@/lib/modules/submissions/components/SubmissionStatusChip';
 
@@ -34,6 +38,7 @@ export default function SubmissionsPage() {
   const status = getFilterParam<SubmissionStatus>('status') ?? '';
   const brokerId = getFilterParam<string>('brokerId') ?? '';
   const companyQuery = getFilterParam<string>('companyQuery') ?? '';
+  const [view, setView] = useState<SubmissionLayout>('grid');
 
   const filters = useMemo(
     () => ({
@@ -105,7 +110,15 @@ export default function SubmissionsPage() {
         <Card variant="outlined">
           <CardContent>
             <Stack spacing={2}>
-              <Typography variant="h6">Submissions</Typography>
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={1.5}
+                justifyContent="space-between"
+                alignItems={{ xs: 'stretch', sm: 'center' }}
+              >
+                <Typography variant="h6">Submissions</Typography>
+                <SubmissionLayoutSwitcher value={view} onChange={setView} />
+              </Stack>
               {/* <Typography color="text.secondary">
                 Hook `submissionsQuery` to render rows, totals, and pagination states. The query is
                 disabled by default so no network calls fire until you enable it.
@@ -117,7 +130,7 @@ export default function SubmissionsPage() {
                 </pre>
               </Box> */}
               {!submissionsQuery.isLoading && submissionsQuery.data ? (
-                <SubmissionGrid submissions={submissionsQuery.data.results} />
+                <SubmissionView submissions={submissionsQuery.data.results} view={view} />
               ) : (
                 <Typography color="text.secondary">Loading...</Typography>
               )}

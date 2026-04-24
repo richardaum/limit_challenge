@@ -3,11 +3,14 @@ import { Box } from '@mui/material';
 import type { SubmissionListItem } from '@/lib/types';
 import { SubmissionCard } from './SubmissionCard';
 
-type SubmissionGridProps = {
+type SubmissionViewProps = {
   submissions: SubmissionListItem[];
+  view?: 'grid' | 'list';
 };
 
-export function SubmissionGrid({ submissions }: SubmissionGridProps) {
+export function SubmissionView({ submissions, view = 'grid' }: SubmissionViewProps) {
+  const isListView = view === 'list';
+
   return (
     <Box
       sx={{
@@ -15,8 +18,8 @@ export function SubmissionGrid({ submissions }: SubmissionGridProps) {
         gap: 2,
         gridTemplateColumns: {
           xs: '1fr',
-          md: 'repeat(2, minmax(0, 1fr))',
-          lg: 'repeat(3, minmax(0, 1fr))',
+          md: isListView ? '1fr' : 'repeat(2, minmax(0, 1fr))',
+          lg: isListView ? '1fr' : 'repeat(3, minmax(0, 1fr))',
         },
       }}
     >
