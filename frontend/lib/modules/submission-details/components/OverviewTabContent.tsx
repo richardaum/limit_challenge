@@ -57,7 +57,13 @@ export function OverviewTabContent({ submission }: OverviewTabContentProps) {
               <Stack direction="row" spacing={0.5} alignItems="center">
                 <Typography>{submission.owner.fullName}</Typography>
                 <Tooltip title={submission.owner.email} arrow>
-                  <IconButton size="small" aria-label="Owner email" sx={styles.ownerRow}>
+                  <IconButton
+                    component="a"
+                    href={`mailto:${submission.owner.email}`}
+                    size="small"
+                    aria-label={`Email from ${submission.owner.fullName}`}
+                    sx={styles.ownerRow}
+                  >
                     <EmailOutlinedIcon fontSize="inherit" />
                   </IconButton>
                 </Tooltip>

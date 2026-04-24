@@ -39,7 +39,7 @@ export function ContactsTabContent({ submission }: ContactsTabContentProps) {
                       component="a"
                       href={`mailto:${contact.email}`}
                       size="small"
-                      aria-label={`Email de ${contact.name}`}
+                      aria-label={`Email from ${contact.name}`}
                       sx={styles.iconButton}
                     >
                       <EmailOutlinedIcon fontSize="inherit" />
@@ -52,7 +52,7 @@ export function ContactsTabContent({ submission }: ContactsTabContentProps) {
                       component="a"
                       href={`tel:${contact.phone}`}
                       size="small"
-                      aria-label={`Telefone de ${contact.name}`}
+                      aria-label={`Phone from ${contact.name}`}
                       sx={styles.iconButton}
                     >
                       <PhoneOutlinedIcon fontSize="inherit" />
