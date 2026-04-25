@@ -13,6 +13,15 @@
 # testing
 /coverage
 
+# vitest
+.vitest/
+*.vitest*.json
+
+# playwright
+/playwright-report/
+/test-results/
+/playwright/.auth/
+
 # next.js
 /.next/
 /out/
