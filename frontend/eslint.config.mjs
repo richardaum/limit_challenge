@@ -1,3 +1,4 @@
+import storybook from 'eslint-plugin-storybook';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
@@ -18,8 +19,7 @@ const eslintConfig = defineConfig([
     rules: {
       'prettier/prettier': 'error',
     },
-  },
-  // Testing Library rules for test files
+  }, // Testing Library rules for test files
   {
     name: 'testing-library',
     files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
@@ -30,21 +30,23 @@ const eslintConfig = defineConfig([
       '@testing-library/no-render-in-lifecycle': 'error',
       '@testing-library/no-unnecessary-act': 'error',
     },
-  },
-  // Playwright rules for E2E test files
+  }, // Playwright rules for E2E test files
   {
     name: 'playwright',
     files: ['e2e/**/*.spec.ts', 'e2e/**/*.spec.tsx'],
     ...playwright.configs['flat/recommended'],
-  },
-  // Override default ignores of eslint-config-next.
+  }, // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
     '.next/**',
     'out/**',
     'build/**',
     'next-env.d.ts',
+    // Storybook
+    'storybook-static/**',
+    'storybook-static/*',
   ]),
+  ...storybook.configs['flat/recommended'],
 ]);
 
 export default eslintConfig;

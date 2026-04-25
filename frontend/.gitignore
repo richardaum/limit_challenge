@@ -22,6 +22,9 @@
 /test-results/
 /playwright/.auth/
 
+# storybook
+/storybook-static/
+
 # next.js
 /.next/
 /out/

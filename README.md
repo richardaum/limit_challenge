@@ -39,6 +39,7 @@ design, relational data modelling, and product-focused UI work.
 - Created `useDebouncedState` hook to debounce the search input.
 - Added mui icon library to enable icons usage.
 - Added unit, integration and e2e tests for the frontend.
+- Added Storybook for the frontend components.
 
 ## Challenge Overview
 
