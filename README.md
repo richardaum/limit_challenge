@@ -4,6 +4,41 @@ This repository hosts the boilerplate for the Submission Tracker assignment. It 
 Django REST Framework backend and a Next.js frontend scaffold so candidates can focus on API
 design, relational data modelling, and product-focused UI work.
 
+## Implementation Notes ✅
+
+### Approach
+
+#### Filters
+
+- Enabled filter params (status, broker and company search)
+- Made filter dropdown items visually equal to the submission statuses for better assimilation.
+- Added proper loading, error and empty states for the broker filter.
+
+#### Submissions list
+
+- Separete grid and list views to address possible user preferences.
+- Prefered a infinite scroll rather than traditional pagination because it feels more natural from UI/UX perspective, but it might require future virtualized list implementation to improve performance.
+- Added counter of total submissions to the header for better perspective over the total number of items.
+- Added a search input for the company search to filter the submissions by company name.
+- Added tooltips for priority to save space but still provide the information.
+- Clamped submission summary to 2 lines to promote better scanning.
+
+#### Submission detail
+
+- Added a sidebar layout with the notes to take advantage of the space and to make the notes more readable.
+- Added tabs layout for the submission detail to make it more readable and to take advantage of the space.
+- Added counter of total contacts, documents and notes to the header for better perspective over the total number of items.
+- Added clickable icons with tooltips for email and phone to save space but still provide the information and some extra actions.
+- Opted for a grid layout inside each subsection to save space.
+- Added a independent scrolling area for the notes to optmize space on desktop.
+
+### Implementation choices
+
+- Created `modules` folder to group related components outside the app router structure.
+- Created `useFilterParam` hook to manage filter params in the URL.
+- Created `useDebouncedState` hook to debounce the search input.
+- Added mui icon library to enable icons usage.
+
 ## Challenge Overview
 
 Operations managers need a workspace to review broker-submitted opportunities. Build a lightweight
